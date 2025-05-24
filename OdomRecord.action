@@ -1,0 +1,13 @@
+# wall_follower/action/OdomRecord.action
+
+# ———— GOAL ————
+# (empty: no fields in the goal)
+---
+
+# ———— RESULT ————
+geometry_msgs/Point32[] list_of_odoms
+
+---
+
+# ———— FEEDBACK ————
+float32 current_total

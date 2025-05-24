@@ -1,0 +1,8 @@
+<launch>
+    <node pkg="wall_follower" type="find_wall_server.py" name="find_wall_server" output="screen" />
+
+    <node pkg="wall_follower" type="record_odom_server.py" name="record_odom_server" output="screen" />
+
+    <node pkg="wall_follower" type="wall_follower_node.py" name="wall_follower_node" output="screen" />
+
+</launch>
