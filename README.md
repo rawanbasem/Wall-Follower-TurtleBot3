@@ -11,38 +11,38 @@ The primary goal of this ROS package is to teach a robot to navigate an environm
 
 ### Wall Following Behavior
 
-The core behavior is implemented in `wall_follower_node.py`[cite: 5]. The robot maintains a distance of approximately 30cm from a wall on its right-hand side[cite: 2].
+The core behavior is implemented in `wall_follower_node.py`. The robot maintains a distance of approximately 30cm from a wall on its right-hand side.
 
-* **Input:** Subscribes to the `/scan` laser topic (of type `sensor_msgs/LaserScan`) to measure the robot's distance to the wall using the rightmost laser ray (90º angle to the right with the front of the robot)[cite: 3]. It also utilizes the front laser ray to detect upcoming obstacles[cite: 5].
-* **Output:** Publishes to the `/cmd_vel` velocity topic (of type `geometry_msgs/Twist`) to control the robot's linear and angular speed[cite: 4, 5].
+* **Input:** Subscribes to the `/scan` laser topic (of type `sensor_msgs/LaserScan`) to measure the robot's distance to the wall using the rightmost laser ray (90º angle to the right with the front of the robot). It also utilizes the front laser ray to detect upcoming obstacles.
+* **Output:** Publishes to the `/cmd_vel` velocity topic (of type `geometry_msgs/Twist`) to control the robot's linear and angular speed.
 * **Logic:**
-    * If the right ray distance is `> 0.3m`, the robot adds some rotational speed to approach the wall[cite: 4].
-    * If the right ray distance is `< 0.2m`, the robot adds rotational speed in the opposite direction to move away from the wall[cite: 4].
-    * If the right ray distance is `between 0.2m and 0.3m`, the robot moves forward without additional rotational speed[cite: 4].
-    * **Wall Crossing Behavior:** If the front laser ray detects an obstacle closer than `0.5m`, the robot turns fast to the left while moving forward, transitioning to follow the next wall[cite: 4].
+    * If the right ray distance is `> 0.3m`, the robot adds some rotational speed to approach the wall.
+    * If the right ray distance is `< 0.2m`, the robot adds rotational speed in the opposite direction to move away from the wall.
+    * If the right ray distance is `between 0.2m and 0.3m`, the robot moves forward without additional rotational speed.
+    * **Wall Crossing Behavior:** If the front laser ray detects an obstacle closer than `0.5m`, the robot turns fast to the left while moving forward, transitioning to follow the next wall.
 
 ### Find Wall Service
 
-A service server (`find_wall_server.py`) [cite: 6] is created to enable the robot to autonomously search for and align with the nearest wall before commencing the wall-following behavior.
+A service server (`find_wall_server.py`)  is created to enable the robot to autonomously search for and align with the nearest wall before commencing the wall-following behavior.
 
-* **Service Message:** Uses a custom service message `FindWall.srv`[cite: 7], which has a boolean response `wallfound`.
+* **Service Message:** Uses a custom service message `FindWall.srv`, which has a boolean response `wallfound`.
     ```
     ---
     bool wallfound
     ```
 * **Behavior when called:**
-    1.  Identifies the shortest laser ray (assumed to be pointing at a wall)[cite: 7].
-    2.  Rotates the robot until its front faces the identified wall[cite: 7].
-    3.  Moves the robot forward until the front ray is shorter than 30cm[cite: 7].
-    4.  Rotates the robot again until ray number 270 (assuming it corresponds to the right-hand side) points to the wall[cite: 7].
-    5.  Returns `wallfound: True`[cite: 7].
-* The `wall_follower_node.py` includes a service client that calls this `find_wall` service once at startup[cite: 5].
+    1.  Identifies the shortest laser ray (assumed to be pointing at a wall).
+    2.  Rotates the robot until its front faces the identified wall.
+    3.  Moves the robot forward until the front ray is shorter than 30cm.
+    4.  Rotates the robot again until ray number 270 (assuming it corresponds to the right-hand side) points to the wall.
+    5.  Returns `wallfound: True`.
+* The `wall_follower_node.py` includes a service client that calls this `find_wall` service once at startup.
 
 ### Record Odometry Action
 
 An action server (`record_odom_server.py`) is implemented to continuously record the robot's odometry (position and orientation) during its movement.
 
-* **Action Message:** Uses a custom action message `OdomRecord.action`[cite: 8].
+* **Action Message:** Uses a custom action message `OdomRecord.action`.
     ```
     # Goal
     ---
@@ -64,7 +64,7 @@ An action server (`record_odom_server.py`) is implemented to continuously record
 * `launch/main.launch`: A ROS launch file that starts both the `find_wall_server.py` service node, the `record_odom_server.py` action node, and the `wall_follower_node.py` control node[cite: 10].
 * `scripts/find_wall_server.py`: The Python ROS node implementing the `find_wall` service server.
 * `scripts/record_odom_server.py`: The Python ROS node implementing the `record_odom` action server.
-* `scripts/wall_follower_node.py`: The main Python ROS node implementing the wall-following logic and containing clients for the `find_wall` service and `record_odom` action[cite: 5].
+* `scripts/wall_follower_node.py`: The main Python ROS node implementing the wall-following logic and containing clients for the `find_wall` service and `record_odom` action.
 * `srv/FindWall.srv`: Defines the custom service message for the `find_wall` service.
 * `CMakeLists.txt`: CMake build script for the ROS package.
 * `package.xml`: ROS package manifest file, defining package metadata and dependencies.
@@ -72,7 +72,7 @@ An action server (`record_odom_server.py`) is implemented to continuously record
 ## System Requirements
 
 * **Operating System:** Ubuntu (typically recommended for ROS)
-* **ROS Distribution:** ROS Noetic [cite: 1]
+* **ROS Distribution:** ROS Noetic 
 * **Python:** Python 3 (as indicated by `#!/usr/bin/env python3` in `wall_follower_node.py`)
 * **ROS Packages:**
     * `rospy`
